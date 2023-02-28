@@ -22,9 +22,7 @@ class Phonebook extends Component {
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { contacts } = this.state;
-    console.log('componentDidUpdate');
     if (contacts.length !== prevState.contacts.length) {
-      console.log('updatelocalstorage');
       localStorage.setItem('my-contacts', JSON.stringify(contacts));
     }
   }
@@ -64,20 +62,7 @@ class Phonebook extends Component {
     return result;
   }
 
-  onAddContacts = ({ name, number }) => {
-    if (this.isDublicate({ name, number })) {
-      return alert(`${name} is already in contacts`);
-    }
-    this.setState(prevState => {
-      const { contacts } = prevState;
-      const newContact = {
-        name,
-        number,
-        id: nanoid(),
-      };
-      return { contacts: [...contacts, newContact] };
-    });
-  };
+  d;
 
   handleFilterChange = e => {
     const { value } = e.target;
