@@ -20,14 +20,14 @@ class Phonebook extends Component {
       });
     }
   }
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(_, prevState) {
     const { contacts } = this.state;
     if (contacts.length !== prevState.contacts.length) {
       localStorage.setItem('my-contacts', JSON.stringify(contacts));
     }
   }
 
-  isDublicate({ name, number }) {
+  isDublicate({ name }) {
     const { contacts } = this.state;
     const normalizedName = name.toLowerCase();
     const dublicate = contacts.find(contact => {
@@ -62,12 +62,25 @@ class Phonebook extends Component {
     return result;
   }
 
-  d;
-
   handleFilterChange = e => {
     const { value } = e.target;
     this.setState({
       filter: value,
+    });
+  };
+
+  onAddContacts = ({ name, number }) => {
+    if (this.isDublicate({ name, number })) {
+      return alert(`${name} is already in contacts`);
+    }
+    this.setState(prevState => {
+      const { contacts } = prevState;
+      const newContact = {
+        name,
+        number,
+        id: nanoid(),
+      };
+      return { contacts: [...contacts, newContact] };
     });
   };
 
